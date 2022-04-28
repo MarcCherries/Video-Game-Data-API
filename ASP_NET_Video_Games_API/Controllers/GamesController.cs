@@ -16,18 +16,41 @@ namespace ASP_NET_Video_Games_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPublishers()
+        public IActionResult GetVideoGamePlatforms()
         {
-            var videoGamePublishers = _context.VideoGames.Select(vg => vg.Publisher).Distinct();
+            var videoGamePlatforms = _context.VideoGames.Where(vg => vg.Year >= 2013).Select(vg => vg.Platform).Distinct().ToList();
 
-            return Ok(videoGamePublishers);
+
+
+
+
+            return Ok(videoGamePlatforms);
         }
 
-        [HttpGet("{gameId}")]
+        //[HttpGet ("Global2013/")]
+        //public IActionResult GetVideoGamesSince2013()
+        //{
+        //    var videoGamePublishers = _context.VideoGames.Where(vg => vg.Year >= 2013).Select(vg => vg.Platform).Distinct().ToList();
+        //    List<object> gameData = new List<object>();
 
-        public IActionResult getGamesById(int gameId)
+      
+              
+        //    foreach(var videoGame in videoGamePublishers)
+        //    {
+        //        var toAdd = _context.VideoGames.Where(vg => vg.Platform == videoGame).Select(vg => vg.GlobalSales).ToList().Sum();
+        //        gameData.Add(toAdd);
+        //    }
+        //    return Ok(gameData);
+        //}
+   
+            
+        
+
+        [HttpGet("{searchTerm}")]
+
+        public IActionResult getGamesById(string searchTerm)
         {
-            var gamesById = _context.VideoGames.Where(vg => vg.Id == gameId);
+            var gamesById = _context.VideoGames.Where(vg => vg.Name.Contains(searchTerm));
             return Ok(gamesById);
         }
     }
